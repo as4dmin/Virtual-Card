@@ -63,7 +63,49 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
                       ),
                   ],
                 ),
-              )
+              ),
+              ListTile(
+                title: Text(contact.email),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _sendEmail(contact.email);
+                      }, 
+                      icon: const Icon(Icons.mail)
+                      ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Text(contact.email),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _openBrowser(contact.website);
+                      }, 
+                      icon: const Icon(Icons.web)
+                      ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Text(contact.email),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        _openMap(contact.address);
+                      }, 
+                      icon: const Icon(Icons.map)
+                      ),
+                  ],
+                ),
+              ),
             ],
             );
             }
@@ -93,6 +135,38 @@ class _ContactDetailsPageState extends State<ContactDetailsPage> {
     if(await canLaunchUrlString(url)){
       await launchUrlString(url);
     }else{
+      showMsg(context, 'Cannot perform this procsee');
+    }
+  }
+
+  void _sendEmail(String email) async {
+    final url = 'mailto:$email';
+    if(await canLaunchUrlString(url)){
+      await launchUrlString(url);
+    }else{
+      showMsg(context, 'Cannot perform this procsee');
+    }
+  }
+
+  void _openBrowser(String website) async {
+    final url = 'https://:$website';
+    if(await canLaunchUrlString(url)){
+      await launchUrlString(url);
+    }else{
+      showMsg(context, 'Cannot perform this procsee');
+    }
+  }
+
+  void _openMap(String address) async {
+    String url = '';
+    if(Platform.isAndroid){
+      url = 'geo:0,0?q=$address';
+    } else {
+      url = 'http://maps.apple.com/?q=$address';
+    }
+    if(await canLaunchUrlString(url)){
+      await launchUrlString(url);
+    } else {
       showMsg(context, 'Cannot perform this procsee');
     }
   }
